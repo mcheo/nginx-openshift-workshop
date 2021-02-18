@@ -1,0 +1,30 @@
+apiVersion: k8s.nginx.org/v1alpha1
+kind: NginxIngressController
+metadata:
+  name: nginx-ingress-controller
+  namespace: nginx-ingress
+spec:
+  type: deployment
+  image:
+    repository: {your own image}
+    tag: {your own image}
+    pullPolicy: Always
+  serviceType: NodePort
+  enableCRDs: true
+  nginxPlus: true
+  ingressClass: nginx-ingress
+  enableTLSPassthrough: true
+  replicas: 1
+  healthStatus:
+    enable: true
+    uri: "/my-health"
+  nginxDebug: true
+  logLevel: 3
+  nginxStatus:
+    enable: true
+    port: 9090
+  prometheus:
+    enable: true
+    port: 9114
+  appProtect:
+    enable: true
