@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluegreen-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: greenbullet
+  template:
+    metadata:
+      labels:
+        app: greenbullet
+    spec:
+      containers:
+      - name: greenbullet
+        image: mcheo/greenbullet:1.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: greenbullet-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: greenbullet
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bluegreen-blue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bluebullet
+  template:
+    metadata:
+      labels:
+        app: bluebullet
+    spec:
+      containers:
+      - name: bluebullet
+        image: mcheo/bluebullet:1.0
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bluebullet-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: bluebullet
